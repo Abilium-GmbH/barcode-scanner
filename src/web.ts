@@ -10,6 +10,7 @@ import {
   CheckPermissionResult,
   StopScanOptions,
   TorchStateResult,
+  BarcodeViewOptions,
   CameraDirection,
   IScanResultWithContent,
 } from './definitions';
@@ -147,6 +148,10 @@ export class BarcodeScannerWeb extends WebPlugin implements BarcodeScannerPlugin
 
   async getTorchState(): Promise<TorchStateResult> {
     return { isEnabled: this._torchState };
+  }
+
+  setBarcodeViewParameters(options: BarcodeViewOptions): void {
+    return;
   }
 
   private async _getVideoElement() {
