@@ -59,6 +59,8 @@ public class BarcodeScanner extends Plugin implements BarcodeCallback {
     private boolean scanningPaused = false;
     private String lastScanResult = null;
 
+    private FrameLayout.LayoutParams cameraPreviewParams = null;
+
     // declare a map constant for allowed barcode formats
     private static final Map<String, BarcodeFormat> supportedFormats = supportedFormats();
 
@@ -113,13 +115,15 @@ public class BarcodeScanner extends Plugin implements BarcodeCallback {
                     settings.setContinuousFocusEnabled(true);
                     mBarcodeView.setCameraSettings(settings);
 
-                    FrameLayout.LayoutParams cameraPreviewParams = new FrameLayout.LayoutParams(
+                    if (this.cameraPreviewParams == null) {
+                      this.cameraPreviewParams = new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT
-                    );
+                      );
+                    }
 
                     // Set BarcodeView as sibling View of WebView
-                    ((ViewGroup) bridge.getWebView().getParent()).addView(mBarcodeView, cameraPreviewParams);
+                    ((ViewGroup) bridge.getWebView().getParent()).addView(mBarcodeView, this.cameraPreviewParams);
 
                     // Bring the WebView in front of the BarcodeView
                     // This allows us to completely style the BarcodeView in HTML/CSS
@@ -572,5 +576,20 @@ public class BarcodeScanner extends Plugin implements BarcodeCallback {
         result.put("isEnabled", this.isTorchOn);
 
         call.resolve(result);
+    }
+
+    @PluginMethod
+    public void setBarcodeViewParameters(PluginCall call) {
+      Integer width = call.getInt("width", FrameLayout.LayoutParams.WRAP_CONTENT);
+      Integer height = call.getInt("height", FrameLayout.LayoutParams.WRAP_CONTENT);
+      Integer marginTop = call.getInt("marginTop", 0);
+      Integer marginLeft = call.getInt("marginLeft", 0);
+
+      this.cameraPreviewParams = new FrameLayout.LayoutParams(
+        width,
+        height
+      );
+      cameraPreviewParams.topMargin = marginTop;
+      cameraPreviewParams.leftMargin = marginLeft;
     }
 }
