@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor-community/barcode-scanner",
+  "name": "@abilium_gmbh/barcode-scanner",
   "version": "4.0.1",
   "description": "A fast and efficient (QR) barcode scanner for Capacitor",
   "main": "dist/plugin.cjs.js",
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capacitor-community/barcode-scanner.git"
+    "url": "git+https://github.com/Abilium-GmbH/barcode-scanner.git"
   },
   "bugs": {
-    "url": "https://github.com/capacitor-community/barcode-scanner/issues"
+    "url": "https://github.com/Abilium-GmbH/barcode-scanner/issues"
   },
   "keywords": [
     "capacitor",
@@ -79,7 +79,7 @@
       "dist/**/*"
     ]
   },
-  "homepage": "https://github.com/capacitor-community/barcode-scanner#readme",
+  "homepage": "https://github.com/Abilium-GmbH/barcode-scanner#readme",
   "directories": {
     "example": "examples"
   },
