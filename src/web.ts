@@ -150,8 +150,8 @@ export class BarcodeScannerWeb extends WebPlugin implements BarcodeScannerPlugin
     return { isEnabled: this._torchState };
   }
 
-  setBarcodeViewParameters(options: BarcodeViewOptions): void {
-    return;
+  setBarcodeViewParameters(_options: BarcodeViewOptions): void {
+    throw this.unimplemented('Not implemented on web.');
   }
 
   private async _getVideoElement() {
