@@ -14,6 +14,7 @@ export interface BarcodeScannerPlugin {
   disableTorch(): Promise<void>;
   toggleTorch(): Promise<void>;
   getTorchState(): Promise<TorchStateResult>;
+  setBarcodeViewParameters(options: BarcodeViewOptions): void;
 }
 
 const _SupportedFormat = {
@@ -241,4 +242,11 @@ export interface TorchStateResult {
    * Whether or not the torch is currently enabled.
    */
   isEnabled: boolean;
+}
+
+export interface BarcodeViewOptions {
+  width: number;
+  height: number;
+  marginTop: number;
+  marginLeft: number;
 }
