@@ -476,6 +476,16 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         call.resolve()
     }
 
+    @objc func setBarcodeViewParameters(_ call: CAPPluginCall) {
+        let width = call.getInt("width") ?? UIScreen.main.bounds.width;
+        let height = call.getInt("height") ?? UIScreen.main.bounds.height;
+        let marginTop = call.getInt("marginTop") ?? 0;
+        let marginLeft = call.getInt("marginLeft") ?? 0;
+
+        self.captureVideoPreviewLayer.frame = CGRect(x: marginLeft, y: marginTop, width: width, height: height)
+        call.resolve()
+    }
+
     @objc func checkPermission(_ call: CAPPluginCall) {
         let force = call.getBool("force") ?? false
 
