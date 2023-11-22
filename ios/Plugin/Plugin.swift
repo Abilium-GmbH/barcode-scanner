@@ -71,6 +71,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
     var savedCall: CAPPluginCall? = nil
     var scanningPaused: Bool = false
     var lastScanResult: String? = nil
+    var aboveWebview: Bool = false;
 
     enum SupportedFormat: String, CaseIterable {
         // 1D Product
@@ -139,11 +140,16 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         return false
     }
 
-    private func setupCamera(cameraDirection: String? = "back") -> Bool {
+    private func setupCamera(cameraDirection: String? = "back", aboveWebview: Bool) -> Bool {
         do {
             var cameraDir = cameraDirection
-            cameraView.backgroundColor = UIColor.clear
-            self.webView!.superview!.insertSubview(cameraView, belowSubview: self.webView!)
+            cameraView.backgroundColor = UIColor.white
+            self.aboveWebview = aboveWebview
+            if aboveWebview {
+                self.webView!.superview!.insertSubview(cameraView, aboveSubview: self.webView!)
+            } else {
+                self.webView!.superview!.insertSubview(cameraView, belowSubview: self.webView!)
+            }
             
             let availableVideoDevices =  discoverCaptureDevices()
             for device in availableVideoDevices {
@@ -246,14 +252,15 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         }
     }
 
-    private func prepare(_ call: CAPPluginCall? = nil) {
+    private func prepareCamera(_ call: CAPPluginCall? = nil) {
         // undo previous setup
         // because it may be prepared with a different config
         self.dismantleCamera()
 
         DispatchQueue.main.async {
+            
             // setup camera with new config
-            if (self.setupCamera(cameraDirection: call?.getString("cameraDirection") ?? "back")) {
+            if (self.setupCamera(cameraDirection: call?.getString("cameraDirection") ?? "back", aboveWebview: call?.getBool("aboveWebview") ?? false)) {
                 // indicate this method was run
                 self.didRunCameraPrepare = true
 
@@ -284,7 +291,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
                 DispatchQueue.main.async {
                     self.load();
                     self.shouldRunScan = true
-                    self.prepare(self.savedCall)
+                    self.prepareCamera(self.savedCall)
                 } 
             }
         } else {
@@ -329,6 +336,9 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
     }
 
     private func hideBackground() {
+        if self.aboveWebview {
+            return
+        }
         DispatchQueue.main.async {
             self.previousBackgroundColor = self.bridge?.webView!.backgroundColor
 
@@ -343,6 +353,9 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
     }
 
     private func showBackground() {
+        if self.aboveWebview {
+            return
+        }
         DispatchQueue.main.async {
             let javascript = "document.documentElement.style.backgroundColor = ''"
 
@@ -425,7 +438,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         }
 
     @objc func prepare(_ call: CAPPluginCall) {
-        self.prepare()
+        self.prepareCamera(call)
         call.resolve()
     }
 
