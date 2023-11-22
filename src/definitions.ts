@@ -113,6 +113,12 @@ export interface ScanOptions {
    * @since 2.1.0
    */
   cameraDirection?: CameraDirection;
+  /**
+   * This parameter can be used to set the camera view above the web view.
+   * 
+   * @since 4.1.5
+   */
+  aboveWebview?: boolean;
 }
 
 export interface StopScanOptions {
