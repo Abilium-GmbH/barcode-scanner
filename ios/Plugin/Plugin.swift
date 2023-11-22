@@ -477,12 +477,12 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
     }
 
     @objc func setBarcodeViewParameters(_ call: CAPPluginCall) {
-        let width = call.getInt("width") ?? UIScreen.main.bounds.width;
-        let height = call.getInt("height") ?? UIScreen.main.bounds.height;
-        let marginTop = call.getInt("marginTop") ?? 0;
-        let marginLeft = call.getInt("marginLeft") ?? 0;
+        let width: CGFloat = CGFloat(call.getFloat("width", Float(UIScreen.main.bounds.width)));
+        let height: CGFloat = CGFloat(call.getFloat("height", Float(UIScreen.main.bounds.height)));
+        let marginTop: Double = call.getDouble("marginTop") ?? 0;
+        let marginLeft: Double = call.getDouble("marginLeft") ?? 0;
 
-        self.captureVideoPreviewLayer.frame = CGRect(x: marginLeft, y: marginTop, width: width, height: height)
+        self.captureVideoPreviewLayer?.frame = CGRect(x: marginLeft, y: marginTop, width: width, height: height)
         call.resolve()
     }
 
