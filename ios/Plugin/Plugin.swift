@@ -150,6 +150,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
             } else {
                 self.webView!.superview!.insertSubview(cameraView, belowSubview: self.webView!)
             }
+            self.webView!.superview!.backgroundColor = UIColor.white
             
             let availableVideoDevices =  discoverCaptureDevices()
             for device in availableVideoDevices {
