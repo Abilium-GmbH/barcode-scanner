@@ -140,7 +140,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         return false
     }
 
-    private func setupCamera(cameraDirection: String? = "back", aboveWebview: Bool) -> Bool {
+    private func setupCamera(cameraDirection: String? = "back", aboveWebview: Bool, scanWindowAspect: Double = 3/4) -> Bool {
         do {
             var cameraDir = cameraDirection
             cameraView.backgroundColor = UIColor.white
@@ -178,6 +178,10 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
             metaOutput = AVCaptureMetadataOutput()
             captureSession!.addOutput(metaOutput!)
             metaOutput!.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+            if (scanWindowAspect >= 3/4) {
+                let width: Double (3.0/4) / scanWindowAspect;
+                metaOutput!.rectOfInterest = CGRect(x: (1.0 - width) / 2, y: 0.0, width: width, height: 1.0)
+            }
             captureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
             cameraView.addPreviewLayer(captureVideoPreviewLayer)
             self.didRunCameraSetup = true
@@ -261,7 +265,10 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
         DispatchQueue.main.async {
             
             // setup camera with new config
-            if (self.setupCamera(cameraDirection: call?.getString("cameraDirection") ?? "back", aboveWebview: call?.getBool("aboveWebview") ?? false)) {
+            if (self.setupCamera(
+                cameraDirection: call?.getString("cameraDirection") ?? "back",
+                aboveWebview: call?.getBool("aboveWebview") ?? false,
+                scanWindowAspect: call?.getDouble("scanWindowAspect") ?? 3.0/4)) {
                 // indicate this method was run
                 self.didRunCameraPrepare = true
 

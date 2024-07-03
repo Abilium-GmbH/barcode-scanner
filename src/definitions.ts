@@ -119,6 +119,8 @@ export interface ScanOptions {
    * @since 4.1.5
    */
   aboveWebview?: boolean;
+
+  scanWindowAspect?: number;
 }
 
 export interface StopScanOptions {
