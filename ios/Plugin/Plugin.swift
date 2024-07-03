@@ -179,7 +179,7 @@ public class BarcodeScanner: CAPPlugin, AVCaptureMetadataOutputObjectsDelegate {
             captureSession!.addOutput(metaOutput!)
             metaOutput!.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             if (scanWindowAspect >= 3/4) {
-                let width: Double (3.0/4) / scanWindowAspect;
+                let width: Double = (3.0/4) / scanWindowAspect;
                 metaOutput!.rectOfInterest = CGRect(x: (1.0 - width) / 2, y: 0.0, width: width, height: 1.0)
             }
             captureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
